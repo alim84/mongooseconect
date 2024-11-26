@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const App = () => {
   let [crud, setcrud] = useState("");
-  let [alltask, setAllTask] = useState([""]);
+  let [alltask, setAllTask] = useState([]);
 
   let handlecrud = async () => {
     // const response = await fetch(" http://localhost:4000/insertdata/", {
@@ -31,6 +31,7 @@ const App = () => {
       .get("http://localhost:4000/getalldata/")
       .then((data) => {
         setAllTask(data.data);
+        console.log(data)
       })
       .catch((error) => {
         console.log(error);
@@ -39,19 +40,21 @@ const App = () => {
 
   useEffect(() => {
     getAllData();
-  }, [alltask]);
+    console.log("aadadfasfas")
+  }, []);
+console.log(alltask)
+  // let handleDelete = (id) => {
+  //   axios
+  //     .delete(`http://localhost:4000/deletedata/:${id}`)
+  //     .then((data) => {
+  //       console.log(data);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //     });
+  // };
 
-  let handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:4000/deletedata/:${id}`)
-      .then((data) => {
-        console.log(data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
+  
   return (
     <>
       <div className="h-100 w-full flex items-center justify-center bg-teal-lightest font-sans">
@@ -73,9 +76,10 @@ const App = () => {
             </div>
           </div>
           <div>
-            {alltask.map((item) => (
-              <div className="flex mb-4 items-center">
-                <p className="w-full text-grey-darkest">{item.crud}</p>
+            {console.log(alltask?.data)}
+            {alltask.data && alltask.data.map((item) => (
+              <div className="flex mb-4 items-center" key={item._id}>
+                <p className="w-full text-grey-darkest">{item.name}</p>
                 <button className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-green-900 text-green border-green hover:bg-green">
                   Update
                 </button>
