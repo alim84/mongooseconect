@@ -31,7 +31,7 @@ const App = () => {
       .get("http://localhost:4000/getalldata/")
       .then((data) => {
         setAllTask(data.data);
-        console.log(data)
+        console.log(data);
       })
       .catch((error) => {
         console.log(error);
@@ -40,21 +40,20 @@ const App = () => {
 
   useEffect(() => {
     getAllData();
-    console.log("aadadfasfas")
-  }, []);
-console.log(alltask)
-  // let handleDelete = (id) => {
-  //   axios
-  //     .delete(`http://localhost:4000/deletedata/:${id}`)
-  //     .then((data) => {
-  //       console.log(data);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+  }, [alltask]);
 
-  
+  let handleDelete = (id) => {
+    console.log(name);
+    axios
+      .delete(`http://localhost:4000/deletedata/${id}`)
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <>
       <div className="h-100 w-full flex items-center justify-center bg-teal-lightest font-sans">
@@ -77,20 +76,21 @@ console.log(alltask)
           </div>
           <div>
             {console.log(alltask?.data)}
-            {alltask.data && alltask.data.map((item) => (
-              <div className="flex mb-4 items-center" key={item._id}>
-                <p className="w-full text-grey-darkest">{item.name}</p>
-                <button className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-green-900 text-green border-green hover:bg-green">
-                  Update
-                </button>
-                <button
-                  onClick={() => handleDelete(item._id)}
-                  className="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-red-500 hover:bg-red"
-                >
-                  Delete
-                </button>
-              </div>
-            ))}
+            {alltask.data &&
+              alltask.data.map((item) => (
+                <div className="flex mb-4 items-center" key={item._id}>
+                  <p className="w-full text-grey-darkest">{item.name}</p>
+                  <button className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-green-900 text-green border-green hover:bg-green">
+                    Update
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item._id)}
+                    className="flex-no-shrink p-2 ml-2 border-2 rounded text-red border-red hover:text-red-500 hover:bg-red"
+                  >
+                    Delete
+                  </button>
+                </div>
+              ))}
           </div>
         </div>
       </div>
