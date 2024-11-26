@@ -5,7 +5,7 @@ const App = () => {
   let [crud, setcrud] = useState("");
   let [alltask, setAllTask] = useState([]);
   let [update, setUpdate] = useState(false);
-  let [updatetask, setUpdatetask] = useState("");
+  let [updatetask, setUpdatetask] = useState([]);
 
   let handlecrud = async () => {
     // const response = await fetch(" http://localhost:4000/insertdata/", {
@@ -56,11 +56,12 @@ const App = () => {
       });
   };
 
-  let handleUpdate = (id) => {
+  let handleUpdate = () => {
+    console.log(setUpdatetask);
     axios
       .patch(`http://localhost:4000/updatedata/${id}`)
       .then((data) => {
-        setUpdatetask({ ...update, name: updatetask });
+        setUpdatetask({ name: updatetask });
         console.log(data);
       })
       .catch((error) => {
@@ -121,7 +122,7 @@ const App = () => {
               placeholder="Update Your list"
             />
             <button
-              onClick={() => handleUpdate(item._id)}
+              onClick={() => handleUpdate(updatetask._id)}
               className="flex-no-shrink p-2 font-bold px-3 border-2 rounded text-teal border-teal bg-teal-300 hover:text-red-800 hover:bg-teal-800"
             >
               Update
