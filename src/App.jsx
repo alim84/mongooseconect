@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 const App = () => {
   let [crud, setcrud] = useState("");
   let [alltask, setAllTask] = useState([]);
+  let [update, setUpdate] = useState(false);
+  let [updatetask, setUpdatetask] = useState("");
 
   let handlecrud = async () => {
     // const response = await fetch(" http://localhost:4000/insertdata/", {
@@ -40,13 +42,25 @@ const App = () => {
 
   useEffect(() => {
     getAllData();
-  }, [alltask]);
+  }, []);
 
   let handleDelete = (id) => {
     console.log(name);
     axios
       .delete(`http://localhost:4000/deletedata/${id}`)
       .then((data) => {
+        console.log(data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  let handleUpdate = (id) => {
+    axios
+      .patch(`http://localhost:4000/updatedata/${id}`)
+      .then((data) => {
+        setUpdatetask({ ...update, name: updatetask });
         console.log(data);
       })
       .catch((error) => {
@@ -80,7 +94,10 @@ const App = () => {
               alltask.data.map((item) => (
                 <div className="flex mb-4 items-center" key={item._id}>
                   <p className="w-full text-grey-darkest">{item.name}</p>
-                  <button className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-green-900 text-green border-green hover:bg-green">
+                  <button
+                    onClick={() => setUpdate(!update)}
+                    className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-green-900 text-green border-green hover:bg-green"
+                  >
                     Update
                   </button>
                   <button
@@ -94,6 +111,24 @@ const App = () => {
           </div>
         </div>
       </div>
+
+      {update && (
+        <div className="h-[400px] w-[400px] mx-auto flex items-center justify-center bg-red-400 font-sans shadow-lg">
+          <div className="flex mt-4">
+            <input
+              onChange={(e) => setUpdatetask(e.target.value)}
+              className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
+              placeholder="Update Your list"
+            />
+            <button
+              onClick={() => handleUpdate(item._id)}
+              className="flex-no-shrink p-2 font-bold px-3 border-2 rounded text-teal border-teal bg-teal-300 hover:text-red-800 hover:bg-teal-800"
+            >
+              Update
+            </button>
+          </div>
+        </div>
+      )}
     </>
   );
 };
