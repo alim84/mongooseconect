@@ -5,7 +5,7 @@ const App = () => {
   let [crud, setcrud] = useState("");
   let [alltask, setAllTask] = useState([]);
   let [update, setUpdate] = useState(false);
-  let [updatetask, setUpdatetask] = useState([]);
+  let [updatetask, setUpdatetask] = useState("");
 
   let handlecrud = async () => {
     // const response = await fetch(" http://localhost:4000/insertdata/", {
@@ -19,9 +19,12 @@ const App = () => {
     axios
       .post("http://localhost:4000/insertdata/", {
         name: crud,
+          nume:""
+
       })
       .then((data) => {
         console.log(data);
+      
       })
       .catch((error) => {
         console.log(error);
@@ -56,12 +59,12 @@ const App = () => {
       });
   };
 
-  let handleUpdate = () => {
-    console.log(setUpdatetask);
+  let handleUpdate = (id) => {
     axios
       .patch(`http://localhost:4000/updatedata/${id}`)
       .then((data) => {
-        setUpdatetask({ name: updatetask });
+      setUpdatetask({ ...updatetask, name:data.name });
+
         console.log(data);
       })
       .catch((error) => {
@@ -90,13 +93,16 @@ const App = () => {
             </div>
           </div>
           <div>
-            {console.log(alltask?.data)}
+           
             {alltask.data &&
               alltask.data.map((item) => (
                 <div className="flex mb-4 items-center" key={item._id}>
                   <p className="w-full text-grey-darkest">{item.name}</p>
+                  {console.log(item)}
                   <button
+                  
                     onClick={() => setUpdate(!update)}
+                   
                     className="flex-no-shrink p-2 ml-4 mr-2 border-2 rounded hover:text-green-900 text-green border-green hover:bg-green"
                   >
                     Update
@@ -117,12 +123,13 @@ const App = () => {
         <div className="h-[400px] w-[400px] mx-auto flex items-center justify-center bg-red-400 font-sans shadow-lg">
           <div className="flex mt-4">
             <input
-              onChange={(e) => setUpdatetask(e.target.value)}
+              onChange={() => setUpdatetask(alltask.item)}
               className="shadow appearance-none border rounded w-full py-2 px-3 mr-4 text-grey-darker"
               placeholder="Update Your list"
+            value={alltask.name}
             />
             <button
-              onClick={() => handleUpdate(updatetask._id)}
+              onClick={() => handleUpdate(alltask._id)}
               className="flex-no-shrink p-2 font-bold px-3 border-2 rounded text-teal border-teal bg-teal-300 hover:text-red-800 hover:bg-teal-800"
             >
               Update
